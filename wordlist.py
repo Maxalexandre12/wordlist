@@ -1,6 +1,8 @@
 import itertools
+import string
 import re
-         
+
+#Função para remover os acentos das palavras, espaços e caracteres especiais
 def remover_acentos(palavras_chave):
     palavras_chave_sem_acentos = []
     for palavra in palavras_chave:
@@ -15,6 +17,7 @@ def remover_acentos(palavras_chave):
         palavras_chave_sem_acentos.append(palavra_sem_acentos)
     return palavras_chave_sem_acentos
 
+# Funções para gera permutações, combinações, mesclagem e inserções de letras e números entre as palavras
 def permutacoes(palavras_chave):
     permutations = set()
     for perm in itertools.permutations(palavras_chave):
@@ -43,12 +46,13 @@ def mesclagens(palavras_chave):
 
 def insercoes(palavras_chave):
     insertions = set()
-    caracteres_especiais = ['@', '!', '$', '%', '&']
+    caracteres = list(string.ascii_letters + string.digits)
+
     for r in range(1, len(palavras_chave)+1):
         for combi in itertools.combinations(palavras_chave, r):
             for perm in itertools.permutations(combi):
                 for i in range(len(perm)+1):
-                    for c in caracteres_especiais:
+                    for c in caracteres:
                         palavra_inserida = ''.join(list(perm[:i]) + [c] + list(perm[i:]))
                         if palavra_inserida not in palavras_chave:
                             insertions.add(palavra_inserida)
@@ -59,6 +63,7 @@ def main():
     palavras = palavras.split(",")
     palavras_chave_sem_acentos = remover_acentos(palavras)
     
+    # Faz a união de permutações, combinações, mesclagens e inserções
     wordlist = set()
     wordlist |= permutacoes(palavras_chave_sem_acentos)
     wordlist |= combinacoes(palavras_chave_sem_acentos)
